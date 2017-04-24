@@ -23,7 +23,9 @@ and this to your crate root:
 extern crate log_tools;
 ```
 
-## Example
+## Examples
+
+### Pretty JSON formatting on Stdout
 
 To print log record using stdout with the json formatter:
 
@@ -59,4 +61,27 @@ It will print something like:
   "line": 62,
   "date": "2017-04-24T14:41:10Z"
 }
+```
+
+### Custom formatter
+
+Let's create our custom formatter:
+
+```rust
+fn custom_formatter(record: &ExtendedLogRecord) -> String {
+    format!("{} - {} - {}\n", record.date, record.level, record.msg)
+}
+
+fn main() {
+    ExtendedLogger::init(LogLevelFilter::Info).unwrap();
+    ExtendedLogger::add_handler(
+        Handler::from(StdoutHandler::new(Some(LogLevelFilter::Info), Some(custom_formatter)))
+    );
+    
+    error!("oh no !");
+}
+```
+It will print something like:
+```
+2017-04-24T14:45:47Z - ERROR - oh no !
 ```

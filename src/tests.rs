@@ -31,7 +31,7 @@ fn test_stdout_logger() {
 
 #[test]
 fn test_stdout_json() {
-    let rec = create_record("Test - StdoutHandler");
+    let rec = create_record("Test - StdoutHandler - json");
 
     let mut hdlr = StdoutHandler::new(
         Some(LogLevelFilter::Info),
@@ -42,7 +42,7 @@ fn test_stdout_json() {
 
 #[test]
 fn test_file_json() {
-    let rec = create_record("Test - FileHandler");
+    let rec = create_record("Test - FileHandler - json");
 
     let mut hdlr = FileHandler::new(
         "/tmp/log.txt",
@@ -54,10 +54,18 @@ fn test_file_json() {
 
 #[test]
 fn test_stdout_pretty_json() {
-    ExtendedLogger::init(LogLevelFilter::Info).unwrap();
-    ExtendedLogger::add_handler(
-        Handler::from(StdoutHandler::new(Some(LogLevelFilter::Info), Some(pretty_json)))
-    );
+    let rec = create_record("Test - StdoutHandler - pretty_json");
+    let mut hdlr = StdoutHandler::new(Some(LogLevelFilter::Info), Some(pretty_json));
+    hdlr.handle(&rec);
+}
 
-    info!("done");
+fn custom_formatter(record: &ExtendedLogRecord) -> String {
+    format!("{} - {} - {}\n", record.date, record.level, record.msg)
+}
+
+#[test]
+fn test_stdout_custom() {
+    let rec = create_record("Test - StdoutHandler - custom_formatter");
+    let mut hdlr = StdoutHandler::new(Some(LogLevelFilter::Info), Some(custom_formatter));
+    hdlr.handle(&rec);
 }
