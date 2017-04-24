@@ -30,24 +30,36 @@ pub struct ExtendedLogRecord<'a> {
 /// Construct a `ExtendedLogRecord` via a conversion from a `LogRecord`.
 impl<'a> From<&'a LogRecord<'a>> for ExtendedLogRecord<'a> {
     fn from(record: &'a LogRecord<'a>) -> ExtendedLogRecord<'a> {
+        ExtendedLogRecord::new(
+            record.location().__file,
+            record.level(),
+            record.location().__line,
+            record.location().__module_path,
+            format!("{}", record.args()),
+            String::from(record.target()),
+        )
+    }
+}
+
+impl<'a> ExtendedLogRecord<'a> {
+    /// `ExtendedLogRecord` factory, may not be used directly
+    pub fn new(file: &'a str, level: LogLevel, line: u32, module: &'a str, msg: String, target: String) -> ExtendedLogRecord<'a> {
         /// We get the current UTC time as log message creation date.
         let now = time::now_utc();
 
         ExtendedLogRecord {
             date: format!("{}", now.rfc3339()),
-            file: record.location().__file,
-            level: record.level().to_string(),
-            levelno: record.level() as u32,
-            line: record.location().__line,
-            module: record.location().__module_path,
-            msg: format!("{}", record.args()),
-            target: String::from(record.target()),
+            file: file,
+            level: level.to_string(),
+            levelno: level as u32,
+            line: line,
+            module: module,
+            msg: msg,
+            target: target,
             timestamp: now.to_timespec().sec,
         }
     }
-}
 
-impl<'a> ExtendedLogRecord<'a> {
     /// Recover log record level by its name to allow level comparison.
     pub fn level(&self) -> LogLevel {
         LogLevel::from_str(self.level.as_str()).unwrap()

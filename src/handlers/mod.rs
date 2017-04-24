@@ -9,18 +9,27 @@ use record::ExtendedLogRecord;
 use std::sync::Mutex;
 
 lazy_static! {
+    /// We define handlers as static to be executed at runtime.
     pub static ref HANDLERS: Mutex<Vec<Handler>> = Mutex::new(vec![]);
 }
 
+/// A trait encapsulating the operations required of a handler
 pub trait Handle {
+    /// Determines if a log record may be handled by the handler.
     fn handle(&mut self, record: &ExtendedLogRecord);
+    /// Emit the log record.
     fn emit(&mut self, record: &ExtendedLogRecord);
 }
 
+/// A enum to define available handlers
 pub enum Handler {
+    /// A dummy handler use to do nothing.
     Null(NullHandler),
+    /// A handler to send the log record into stdout.
     Stdout(StdoutHandler),
+    /// A handler to send the log record into a file.
     File(FileHandler),
+    /// A handler to send the log record into a TCP socket.
     TCP(TCPHandler)
 }
 
@@ -34,7 +43,6 @@ impl Handler {
         };
     }
 }
-
 
 impl From<StdoutHandler> for Handler {
     fn from(hdlr: StdoutHandler) -> Handler {
