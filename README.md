@@ -1,2 +1,4 @@
-# log-tools-rs
+log-tools-rs
+============
+
 Extented log lib with handlers
