@@ -1,5 +1,5 @@
-log-tools-rs
-============
+log-tools
+=========
 
 [![Build Status](https://travis-ci.org/cdumay/log-tools-rs.svg?branch=master)](https://travis-ci.org/cdumay/log-tools-rs)
 
@@ -85,3 +85,7 @@ It will print something like:
 ```
 2017-04-24T14:45:47Z - ERROR - oh no !
 ```
+
+## License
+
+Licensed under the [MIT license](http://opensource.org/licenses/MIT).
