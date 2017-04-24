@@ -1,7 +1,7 @@
 use log::{LogLevelFilter, LogLevel};
 use logger::ExtendedLogger;
 use handlers::Handler;
-use formatters::json;
+use formatters::{json, pretty_json};
 use handlers::streams::stdout::StdoutHandler;
 use handlers::streams::file::FileHandler;
 use handlers::streams::net::TCPHandler;
@@ -30,7 +30,7 @@ fn test_stdout_logger() {
 }
 
 #[test]
-fn test_stdout_handler() {
+fn test_stdout_json() {
     let rec = create_record("Test - StdoutHandler");
 
     let mut hdlr = StdoutHandler::new(
@@ -41,7 +41,7 @@ fn test_stdout_handler() {
 }
 
 #[test]
-fn test_file_handler() {
+fn test_file_json() {
     let rec = create_record("Test - FileHandler");
 
     let mut hdlr = FileHandler::new(
@@ -50,4 +50,14 @@ fn test_file_handler() {
         Some(json),
     );
     hdlr.handle(&rec);
+}
+
+#[test]
+fn test_stdout_pretty_json() {
+    ExtendedLogger::init(LogLevelFilter::Info).unwrap();
+    ExtendedLogger::add_handler(
+        Handler::from(StdoutHandler::new(Some(LogLevelFilter::Info), Some(pretty_json)))
+    );
+
+    info!("done");
 }
