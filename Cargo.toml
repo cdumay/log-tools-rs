@@ -1,0 +1,10 @@
+[package]
+name = "log-handlers-rs"
+version = "0.1.0"
+authors = ["Cedric Dumay <cedric.dumay@gmail.com>"]
+
+[dependencies]
+log = "0.3.7"
+rustc-serialize = "0.3.23"
+time = "0.1.36"
+lazy_static = "0.2"
