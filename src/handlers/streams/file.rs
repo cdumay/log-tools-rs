@@ -21,9 +21,9 @@ use std::fs::{File, OpenOptions};
 ///     "MyFactory".to_string()
 /// );
 /// let mut hdlr = FileHandler::new(
+///     "/tmp/log.txt",
 ///     Some(LogLevelFilter::Info),
 ///     Some(json),
-///     "/tmp/log.txt"
 /// );
 ///
 /// hdlr.handle(&rec);
@@ -31,7 +31,7 @@ use std::fs::{File, OpenOptions};
 ///
 /// It will format the log record as JSON and store it into `/tmp/log.txt` like:
 ///
-/// ```
+/// ```json
 ///{"level":"INFO","levelno":3,"msg":"Test","target":"MyFactory","timestamp":1493042710,"module":"log_handlers::tests","file":"src/tests.rs","line":24,"date":"2017-04-24T14:05:10Z"}
 /// ```
 pub type FileHandler = StreamHandler<File>;
