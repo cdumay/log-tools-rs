@@ -1,5 +1,7 @@
 use record::ExtendedLogRecord;
 
+/// A trait encapsulating the filtering operation of handlers
 pub trait Filter {
-    fn filter(&self, &ExtendedLogRecord) -> bool;
+    /// determines if a log message would be logged by the handler.
+    fn filter(&self, record: &ExtendedLogRecord) -> bool;
 }
