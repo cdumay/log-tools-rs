@@ -1,7 +1,7 @@
-use formatters::default;
+use formatter::default;
 use handlers::streams::StreamHandler;
 use log::LogLevelFilter;
-use record::ExtendedLogRecord;
+use ExtendedLogRecord;
 use std::io::{self, Stdout};
 
 /// Type based on StreamHandler to handle the `Stdout` stream.

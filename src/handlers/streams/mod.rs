@@ -1,11 +1,14 @@
+//!
+//! A set of stream based handlers such as file, stdout ...
+//!
+
 pub mod file;
 pub mod stdout;
 pub mod net;
 
-use filters::Filter;
-use handlers::Handle;
+use handlers::{Handle, Filter};
 use log::LogLevelFilter;
-use record::ExtendedLogRecord;
+use ExtendedLogRecord;
 use std::io::Write;
 
 /// Base handler for streams

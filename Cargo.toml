@@ -1,6 +1,5 @@
 [package]
-
-name = "log-handlers"
+name = "log-tools"
 version = "0.0.1"
 authors = ["Cedric Dumay <cedric.dumay@gmail.com>"]
 license = "MIT/Apache-2.0"

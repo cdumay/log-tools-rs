@@ -1,12 +1,21 @@
-pub mod null;
+//!
+//! Module which provide handlers to send the log records to the appropriate destination.
+//!
 pub mod streams;
 
-use handlers::null::NullHandler;
 use handlers::streams::file::FileHandler;
 use handlers::streams::net::TCPHandler;
 use handlers::streams::stdout::StdoutHandler;
-use record::ExtendedLogRecord;
+use log::LogLevelFilter;
+use ExtendedLogRecord;
 use std::sync::Mutex;
+
+/// A trait encapsulating the filtering operation of the handler.
+pub trait Filter {
+    /// determines if a log message would be logged by the handler.
+    fn filter(&self, record: &ExtendedLogRecord) -> bool;
+}
+
 
 lazy_static! {
     /// We define handlers as static to be executed at runtime.
@@ -21,7 +30,7 @@ pub trait Handle {
     fn emit(&mut self, record: &ExtendedLogRecord);
 }
 
-/// A enum to define available handlers
+/// Available handlers
 pub enum Handler {
     /// A dummy handler use to do nothing.
     Null(NullHandler),
@@ -66,4 +75,19 @@ impl From<TCPHandler> for Handler {
     fn from(hdlr: TCPHandler) -> Handler {
         Handler::TCP(hdlr)
     }
+}
+
+///
+/// A dummy handler which does nothing
+///
+pub struct NullHandler;
+
+impl Filter for NullHandler {
+    /// Always accept the record
+    fn filter(&self, record: &ExtendedLogRecord) -> bool { true }
+}
+
+impl Handle for NullHandler {
+    fn handle(&mut self, record: &ExtendedLogRecord) {}
+    fn emit(&mut self, record: &ExtendedLogRecord) {}
 }
