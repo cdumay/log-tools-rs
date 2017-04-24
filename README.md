@@ -1,4 +1,4 @@
 log-tools-rs
 ============
 
-Extented log lib with handlers
+Still unstable do not use yet!
